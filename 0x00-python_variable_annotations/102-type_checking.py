@@ -4,6 +4,7 @@ import typing
 
 
 def zoom_array(lst: typing.Tuple, factor: int = 2) -> typing.List:
+    """Documentation for advanced annotations"""
     zoomed_in: typing.List = [
         item for item in lst
         for i in range(factor)
