@@ -3,7 +3,7 @@
 import typing
 
 
-def sum_mixed_list(mxd_lst: typing.List[int | float]) -> float:
+def sum_mixed_list(mxd_lst: typing.List[typing.Union[int, float]]) -> float:
     """This script takes a list of mixed values and return the sum as a float
 
     Keyword arguments:
