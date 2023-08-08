@@ -13,4 +13,3 @@ async def wait_n(n: int, max_delay: int) -> list:
         n -= 1
         ls.append(t)
     return ls
-
