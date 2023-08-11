@@ -23,5 +23,5 @@ async def task_wait_n(n: int, max_delay: int) -> typing.List[float]:
         t = await task_wait_random(max_delay)
         n -= 1
         ls.append(t)
-    bubble_sort(ls)
+    # bubble_sort(ls)
     return ls
