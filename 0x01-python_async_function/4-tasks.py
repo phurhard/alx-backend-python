@@ -18,10 +18,7 @@ def bubble_sort(arr):
 
 async def task_wait_n(n: int, max_delay: int) -> typing.List[float]:
     """Returns a list of delays in the program"""
-    ls = []
-    while n:
-        t = await task_wait_random(max_delay)
-        n -= 1
-        ls.append(t)
-    # bubble_sort(ls)
-    return ls
+    ls = await asyncio.gather(
+        *tuple(map(lambda _: task_wait_random(max_delay),  range(n)))
+    )
+    return sorted(ls)
