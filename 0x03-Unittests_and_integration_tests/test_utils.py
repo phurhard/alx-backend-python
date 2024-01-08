@@ -24,7 +24,7 @@ class TestAccessNestedMap(unittest.TestCase):
         """Returns a KeyError because the keys path is not  available"""
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
-        
+
         exception = context.exception
         self.assertEqual(exception.args[0], expected)
 
