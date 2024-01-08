@@ -50,17 +50,27 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    """This class defines the memoize usage
+    memoize is used as a caching system.
+    it is the storing of values/result from a function operation so that
+    that result can be reused if the function is called multiple times with
+    the same arguments."""
     def test_memoize(self):
+        """Test for the memoize decorator"""
         class TestClass:
+            """Test class"""
             def a_method(self):
+                """A method to return a value 42"""
                 return 42
 
             @memoize
             def a_property(self):
+                """The memoize method"""
                 return self.a_method()
 
         @patch('test_utils.TestMemoize.test_memoize.TestClass.a_method')
         def test_function(self, mock_a_method):
+            """The test function"""
             # Set up the mock_a_method return value
             mock_a_method.return_value = 42
 
