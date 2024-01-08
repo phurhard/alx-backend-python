@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import unittest
+from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import access_nested_map, get_json
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -28,11 +29,21 @@ class TestAccessNestedMap(unittest.TestCase):
         exception = context.exception
         self.assertEqual(exception.args[0], expected)
 
-        #get_JSON
-# class TestGetJson(unittest.TestCase):
-#     """Get JSON parameterization"""
-#     @patch('utils.requests')
-#     def test_get_json(self, mock_request):
-#         """JSON Mocking"""
-#         mock_reponse = MagicMock()
-#         mock_reponse.json.return_value = {}
+
+class TestGetJson(unittest.TestCase):
+    """Get JSON parameterization"""
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    @patch('requests.get')
+    def test_get_json(self, url, test_payload, mock_request):
+        """JSON Mocking"""
+        mock_response = Mock()
+        mock_response.json.return_value = test_payload
+
+        mock_request.return_value = mock_response
+        result = get_json(url)
+
+        self.assertEqual(result, test_payload)
+        mock_request.assert_called_once_with(url)
