@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch
 from client import GithubOrgClient
 from parameterized import parameterized
-from typing import Dict
+from typing import Dict, List
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -34,3 +34,16 @@ class TestGithubOrgClient(unittest.TestCase):
             result: str = instance._public_repos_url
 
             self.assertEqual(result, git['key'])
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock_request):
+        """Unit test public repos
+        which is to return a list of repositories"""
+        mock_request.return_value = [{'name': 'value1'}, {'name': 'value2'}]
+        with patch.object(GithubOrgClient, '_public_repos_url') as git:
+            git.return_value = 'url/json'
+            instance = GithubOrgClient('google')
+            result: List = instance.public_repos()
+            self.assertEqual(result, ['value1', 'value2'])
+            mock_request.assert_called_once()
+            # git.assert_called_once()
