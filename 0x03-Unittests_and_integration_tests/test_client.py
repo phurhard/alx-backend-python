@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import patch
 from client import GithubOrgClient
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from typing import Dict, List
 
 
@@ -54,5 +54,16 @@ class TestGithubOrgClient(unittest.TestCase):
         ])
     def test_has_license(self, repo, key, expected):
         """Unit test has license"""
-        # path = ['license', 'key']
         self.assertEqual(GithubOrgClient.has_license(repo, key), expected)
+
+
+@parameterized_class
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration testing"""
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        return super().tearDown()
