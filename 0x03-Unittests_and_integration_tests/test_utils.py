@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Utils function to test patch, memoize, and parameterize"""
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
