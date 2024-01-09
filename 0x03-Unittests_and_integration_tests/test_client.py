@@ -25,3 +25,12 @@ class TestGithubOrgClient(unittest.TestCase):
         result: Dict = instance.org
         self.assertEqual(result, {"key": "value"})
         mock_request.assert_called_once_with(url)
+
+    def test_public_repos_url(self):
+        """Used to unit-test the GithubOrgsClient._public_repos_url property"""
+        with patch.object(GithubOrgClient, 'org') as git:
+            git.return_value = {'key': 'value'}
+            instance = GithubOrgClient('google')
+            result: str = instance._public_repos_url
+
+            self.assertEqual(result, git['key'])
