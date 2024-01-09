@@ -60,12 +60,12 @@ class TestMemoize(unittest.TestCase):
         """Test for the memoize decorator"""
         class TestClass:
             """Test class"""
-            def a_method(self):
+            def a_method(self) -> int:
                 """A method to return a value 42"""
                 return 42
 
             @memoize
-            def a_property(self):
+            def a_property(self) -> int:
                 """The memoize method"""
                 return self.a_method()
 
@@ -86,5 +86,8 @@ class TestMemoize(unittest.TestCase):
             mock_a_method.assert_called_once_with(test_instance)
 
             # Assert that the results are correct
+            assert isinstance(result1, int)
+            assert isinstance(result2, int)
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
+        # test_function()
