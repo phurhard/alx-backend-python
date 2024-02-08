@@ -1,2 +1,2 @@
-## This directory focuses on testing, which iis an important part of a software development journey
-* packaes used include ```unittests```, ```parameterized```, ```mock```
+## This directory focuses on testing, which is an important part of a software development journey
+* packages used include ```unittests```, ```parameterized```, ```mock```

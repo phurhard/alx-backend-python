@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""Utils function to test patch, memoize, and parameterize"""
 import unittest
+from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -24,15 +26,68 @@ class TestAccessNestedMap(unittest.TestCase):
         """Returns a KeyError because the keys path is not  available"""
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
-        
+
         exception = context.exception
         self.assertEqual(exception.args[0], expected)
 
-        #get_JSON
-# class TestGetJson(unittest.TestCase):
-#     """Get JSON parameterization"""
-#     @patch('utils.requests')
-#     def test_get_json(self, mock_request):
-#         """JSON Mocking"""
-#         mock_reponse = MagicMock()
-#         mock_reponse.json.return_value = {}
+
+class TestGetJson(unittest.TestCase):
+    """Get JSON parameterization"""
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    @patch('requests.get')
+    def test_get_json(self, url, test_payload, mock_request):
+        """JSON Mocking"""
+        mock_response = Mock()
+        mock_response.json.return_value = test_payload
+
+        mock_request.return_value = mock_response
+        result = get_json(url)
+
+        self.assertEqual(result, test_payload)
+        mock_request.assert_called_once_with(url)
+
+
+class TestMemoize(unittest.TestCase):
+    """This class defines the memoize usage
+    memoize is used as a caching system.
+    it is the storing of values/result from a function operation so that
+    that result can be reused if the function is called multiple times with
+    the same arguments."""
+    def test_memoize(self):
+        """Test for the memoize decorator"""
+        class TestClass:
+            """Test class"""
+            def a_method(self) -> int:
+                """A method to return a value 42"""
+                return 42
+
+            @memoize
+            def a_property(self) -> int:
+                """The memoize method"""
+                return self.a_method()
+
+        @patch('test_utils.TestMemoize.test_memoize.TestClass.a_method')
+        def test_function(self, mock_a_method):
+            """The test function"""
+            # Set up the mock_a_method return value
+            mock_a_method.return_value = 42
+
+            # Create an instance of TestClass
+            test_instance = TestClass()
+
+            # Call a_property twice
+            result1 = test_instance.a_property()
+            result2 = test_instance.a_property()
+
+            # Assert that a_method was only called once
+            mock_a_method.assert_called_once_with(test_instance)
+
+            # Assert that the results are correct
+            assert isinstance(result1, int)
+            assert isinstance(result2, int)
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+        # test_function()
